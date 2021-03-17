@@ -4,4 +4,6 @@
 
 layout: home
 ---
-Hello, World!
+# Welcome
+Check out my posts:
+
