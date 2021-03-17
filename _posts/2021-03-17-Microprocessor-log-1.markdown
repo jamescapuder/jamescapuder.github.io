@@ -2,6 +2,7 @@
 layout: post
 title: "Microprocessor Project Log 1: Design Goals"
 tags: cpu devlog
+date: 2021-03-17 19:19:19
 ---
 
 Welcome, this is the first post discussing my current project: building a microprocessor out of TTL integrated circuits. I'll cover a bit of background on the subject matter, and what is involved in a project like this.
