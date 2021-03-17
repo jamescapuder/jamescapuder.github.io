@@ -38,7 +38,7 @@ Instructions are generally made up of an opcode, which (arbitrarily) designates 
 0100 1000 0101
 ```
 
-In reality, the operands are often memory addresses, which amounts to asking the processor to do is "add the value at memory location **A** to the value at memory location **B**." For this example, it makes little difference.
+In reality, the operands are often memory addresses, which amounts to asking the processor to "add the value at memory location **A** to the value at memory location **B**." For this example, it makes little difference.
 
 Now we have what we need to tell the CPU what work we want it to do, but there's another step required before it can actually *do* the work. The instruction needs to be decoded into control signals that tell the other components what they should be doing. More on these later.
 
