@@ -1,13 +1,13 @@
 ---
 layout: post
-title: "Microprocessor Project Log 1: Background"
+title: "Processor Project Log 1: Background"
 tags: cpu devlog
 date: 2021-03-17 19:19:19
 ---
 
-# Microprocessor Project Log 1: Background
+# Processor Project Log 1: Background
 
-Welcome, this is the first post discussing my current project: building a microprocessor out of TTL integrated circuits. I'll cover a bit of background on the subject matter, and what is involved in a project like this.
+Welcome, this is the first post discussing my current project: building a processor out of TTL integrated circuits. I'll cover a bit of background on the subject matter, and what is involved in a project like this.
 
 *disclaimer: I'm not - by any means - an expert on this stuff. I'm exploring these topics as a learning experience, and any explanations I present are as I understand them, which could be totally wrong/misguided*
 
