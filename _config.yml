@@ -58,4 +58,12 @@ header_pages:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
-google_analytics: G-1HVVL7976G
+
+
+google_analytics:
+  id: 'G-1HVVL7976G'
+  pv:
+    enabled: false
+    proxy_url: ''
+    proxy_endpoint: ''
+    cache: false
