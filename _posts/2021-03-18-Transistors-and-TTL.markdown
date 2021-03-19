@@ -70,7 +70,7 @@ If we connect the emitter of B to the base of the inverter circuit above, then w
 The 74xx series features [a really broad range of gates](https://en.wikipedia.org/wiki/List_of_7400-series_integrated_circuits#74x00_%E2%80%93_74x99) and other things you can build with them. The 7400, for example, features four 2 input NAND gates on a single chip. This is the chip shown at the top of this post. Let's look at the datasheet to figure out what those different pins do:
 
 
-![74LS00](/assets/transistorPost/74ls00Data)
+![74LS00](/assets/transistorPost/7400Datasheet.png.PNG){:height="75%" width="75%"}
 
 
 On the left, we see the connection diagram. Pin 14 (top left) and pin 7 (bottom right) supply power to the chip and are tied to 5V and ground, respectively. The other pins serve as inputs and output for the 4 gates, 12 in total. On the right, we can see the truth table. For any of the 4 gates, the output will be low (0V) when the inputs are both high (5V), and high otherwise. 
