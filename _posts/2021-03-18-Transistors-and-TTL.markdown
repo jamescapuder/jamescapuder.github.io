@@ -33,7 +33,7 @@ Transistors give us something similar, except instead of pressing a button, we m
 ![Transistor](/assets/transistorPost/NPN-bipolar-junction-transistor-symbol.png){:height="50%" width="50%"}
 
 
-It has 3 terminals: Collector (C), Base (B), and Emitter (E). The base is our input, when we apply a small current to this terminal, a larger current begins to flow between the collector and the emitter. In this case, applying a current to the base is like pressing down on the switch: it completes the circuit between the other terminals. 
+It has 3 terminals: Collector (C), Base (B), and Emitter (E). The base is our input, when we apply a small current between this terminal and the emitter, a larger current begins to flow between the collector and the emitter. In this case, applying a current to the base is like pressing down on the switch: it completes the circuit between the other terminals. 
 
 Transistors can be linked together in different ways to make logic gates, which is what we care about for building this processor.
 
@@ -75,7 +75,7 @@ The 74xx series features [a really broad range of gates](https://en.wikipedia.or
 
 On the left, we see the connection diagram. Pin 14 (top left) and pin 7 (bottom right) supply power to the chip and are tied to 5V and ground, respectively. The other pins serve as inputs and output for the 4 gates, 12 in total. On the right, we can see the truth table. For any of the 4 gates, the output will be low (0V) when the inputs are both high (5V), and high otherwise. 
 
-This is convenient for us, as it means we won't need to build anything out of discrete transistors. The series includes a lot of handy chips that we can make use of. You might notice in the examples featured above that we haven't talked about how to actually store data, or latch a particular value for later use. All of our examples so far have outputs that are directly tied to whatever states the inputs are in. To actual store data, we can make constructs out of NAND gates called *latches* and *flip-flops*. We'll discuss these in another post, but rather than constructing them with NAND gates, we'll just use the 74xx series chips that already implement these constructs. 
+This is convenient for us, as it means we won't need to build anything out of discrete transistors. The series includes a lot of handy chips that we can make use of. You might notice in the examples featured above that we haven't talked about how to actually store data, or latch a particular value for later use. All of our examples so far have outputs that are directly tied to whatever states the inputs are in. To store data, we can make constructs out of NAND gates called *latches* and *flip-flops*. We'll discuss these in another post, but rather than constructing them with NAND gates, we'll just use the 74xx series chips that already implement these constructs. 
 
 For the first cut of this project, however, I'm going to avoid chips like the [74ls181](http://susta.cz/fel/74/pdf/sn_74181.pdf), which is a feature rich 4 bit ALU. If we wired two of these together, then we could have a complete 8 bit ALU with 32 total logic and arithmetic operations. This feels a little black-boxy, and considering that the ALU is an interesting component, I'd rather build something out of more easily understandable components, at least for the first implementation. 
 
