@@ -1,0 +1,31 @@
+---
+layout: post
+title: "Transistors and TTL IC's"
+tags: cpu devlog
+date: 2021-03-18
+---
+
+# Transistors and TTL IC's
+
+Welcome. This is going to be the transistor-transistor logic (TTL) post. We'll go over what a transistor is, why they're useful, and a couple of example circuits. Finally, we'll take a look at the 74xx series of TTL integrated circuits, the backbone of this project.
+
+
+![NAND Gate](/assets/transistorPost/ti_sn7400n.jpg)
+
+
+## Transistors
+
+Transistors can come in many forms and have a wide variety of use cases, but we're only interested in one of those forms (NPN Bipolar Junction Transistors) and primarily in one of their uses - an electrically controlled switch. Consider the following circuit with a pushbutton switch:
+
+
+![Switch](/assets/transistorPost/switch_open.jpg)
+
+
+Without the button depressed, there is no connection between the positive and negative power rails. Current can't flow from the positive power rail, through the switch, through the LED, and to ground. But while the button is pressed, the circuit completes, and current flows from positive to negative, through the LED. 
+
+![SwitchPressed](/assets/transistorPost/switch_closed.jpg){:height="50%" width="50%"}
+
+![SwitchPressed](/assets/transistorPost/switch_closed.jpg){:class="img-responsive"}
+
+
+![SwitchPressed](/assets/transistorPost/switch_closed.jpg){:height="700px" width="400px"}

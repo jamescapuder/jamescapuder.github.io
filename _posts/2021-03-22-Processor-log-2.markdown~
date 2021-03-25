@@ -1,0 +1,22 @@
+---
+layout: post
+title: "Processor Log 2: Architecture Boogaloo"
+tags: cpu devlog
+date: 2021-03-22
+usemathjax: true
+---
+
+# Processor Log 2: Architecture Boogaloo
+
+Welcome. In this post, we'll talk about some of the high-level architecture plans for this processor. We'll take a look at a fantastic educational processor, the *SAP-1*, and use this as a baseline.
+
+## SAP-1
+
+The first 9 chapters of the book [Digital Computer Electronics by Malvino and Brown](https://www.amazon.com/Digital-Computer-Electronics-Albert-Malvino/dp/0028005945) teach the reader how to build the fundamental building blocks of computers out of logic gates. These chapters serve as the foundation needed to introduce the first iteration of their Simple As Possible processor (SAP-1). Below is a block diagram of this design:
+
+![SAP-1](/assets/log2/SAP1.PNG){:height="75%" width="75%"}
+
+Each block represents a circuit with a particular function. The lines on the outside edge of each block represent control signals which tell that block what it should do on the next clock cycle. For example, a low \(L_B\) $$L_B$$
+
+
+### Program Counter
