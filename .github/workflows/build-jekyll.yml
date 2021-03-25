@@ -13,20 +13,20 @@ jobs:
 
     - uses: actions/cache@v2
       with:
-        path: vendor/bundle
-	key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-	restore-keys: |
-	  ${{ runner.os }}-gems-
+          path: vendor/bundle
+	  key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+	  restore-keys: |
+	    ${{ runner.os }}-gems-
 
     - uses: jeffreytse/jekyll-deploy-action@v0.2.0
       with:
-        provider: 'github'
-	token: ${{ secrets.GH_TOKEN }}
-	repository: ''
-	branch: 'gh-pages'
-	jekyll_src: './'
-	jekyll_cfg: '_config.yml'
-	jekyll_baseurl: ''
-	bundler_ver: '>=0'
-	cname: ''
-	actor: ''
+          provider: 'github'
+          token: ${{ secrets.GH_TOKEN }}
+          repository: ''
+          branch: 'gh-pages'
+          jekyll_src: './'
+          jekyll_cfg: '_config.yml'
+          jekyll_baseurl: ''
+          bundler_ver: '>=0'
+          cname: ''
+          actor: ''
