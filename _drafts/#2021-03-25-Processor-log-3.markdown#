@@ -1,0 +1,48 @@
+---
+layout: post
+title: "Processor Log 3: Timing"
+tags: cpu devlog
+date: 2021-03-25
+---
+
+
+# Processor Log 3: The Importance of Timing
+
+Welcome. In this post, we'll cover what a clock is in the context of a processor, why they're important and a natural first step, and how to build one. 
+
+
+## Synchronization and Control
+
+When we took a look at some basic logic circuits, I mentioned that the outputs of our example circuits were a direct and (almost) immediate function of the corresponding inputs. This is fine in some cases, but it means that we have no way of maintaining real state: no way of persistently storing the results of computation, and no options for sequencing actions in the processor. All the components are working asynchronously, so if we continued to build a processor like this, we'd have a hard time predicting how everything would interact and verifying that everything is working properly.
+
+To solve this problem, processors usually include some sort of clock module. These clock modules generate a simple square wave:
+
+![square wave](/assets/log3/SQWav.png)
+
+This wave alternates between LOW (0v) and HIGH (5v, in our case). If we think about control signals - signals to individual modules of the processor that control things like input/output enable (whether or not we should read from/write to the bus) - we can use this square wave to determine *when* those control lines should actually be active. We can do this by AND'ing the control signals with the shared clock signal, and using that to drive the modules. 
+
+This gives us control over how the current state of the processor progresses over time. When the clock signal is LOW, the state of the processor doesn't change. During this time, we could set as many control signals to HIGH/LOW as we want, but until the clock signal goes HIGH, there won't be any change in state. 
+
+Since the main action happens when the clock signal goes high, a faster clock (more HIGH/LOW transitions per second, measured in Hertz) results in a more performant processor. Many of the 74 series chips we'll be using have a clock input pin, so hopefully it is clear why the clock is a good place to start.
+
+## Clock Requirements
+
+Aside from generating a square wave, what other features might we want out of a clock module? An easy one is the ability to stop the clock. There will be situations in which being able to halt the clock and observe the state of an individual module or the processor as a whole will come in handy for troubleshooting. Another must is the ability to adjust the speed of the clock. We'll want the freedom to watch a program execute at a human-readable speed (very slow), but retain the ability to have the processor run as fast as it can. Finally, we'll want some form of debug mode that allows us to generate one clock pulse at a time when we press a button.
+
+## 555 Timer
+
+The [555 timer](https://www.ti.com/lit/ds/slfs022i/slfs022i.pdf?ts=1616675730638&ref_url=https%253A%252F%252Fwww.google.com%252F) is an extremely popular chip that can satisfy all of these requirements. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+

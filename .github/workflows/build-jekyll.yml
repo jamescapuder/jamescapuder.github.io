@@ -28,5 +28,5 @@ jobs:
             jekyll_cfg: '_config.yml'
             jekyll_baseurl: ''
             bundler_ver: '>=0'
-            cname: ''
+            cname: 'www.jamescapuder.com'
             actor: ''
