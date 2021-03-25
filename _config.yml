@@ -34,6 +34,11 @@ remote_theme: b2a3e8/jekyll-theme-console
 style: hacker
 plugins:
   - jekyll-feed
+  - jekyll-spaceship
+
+markdown: kramdown
+kramdown:
+  math_engine: katex
 
 header_pages:
   - index.markdown
