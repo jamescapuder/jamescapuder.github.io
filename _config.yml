@@ -36,10 +36,6 @@ plugins:
   - jekyll-feed
   - jekyll-spaceship
 
-markdown: kramdown
-kramdown:
-  math_engine: katex
-
 header_pages:
   - index.markdown
   - about.markdown
@@ -64,6 +60,7 @@ header_pages:
 #   - vendor/gems/
 #   - vendor/ruby/
 
+markdown: kramdown
 
 google_analytics:
   id: 'G-1HVVL7976G'
