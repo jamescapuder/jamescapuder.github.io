@@ -3,6 +3,7 @@ layout: post
 title: "Processor Log 2: Architecture Boogaloo"
 tags: cpu devlog
 date: 2021-03-22
+mathjax: yes
 ---
 
 # Processor Log 2: Architecture Boogaloo
@@ -17,7 +18,7 @@ The first 9 chapters of the book [Digital Computer Electronics by Malvino and Br
 
 Each block represents a circuit with a particular function. The lines on the outside edge of each block represent control signals which tell that block what it should do on the next clock cycle. For example, a high E<sub>A</sub> enables the output of the A register, meaning that whatever value this register holds will be asserted onto the bus. 
 
-The bus is like a shared group of wires that the different modules can put their value on or read whatever value is on the bus. A high <span>$E_A$</span> and a low <span>$\bar{L}_O$</span> tells the A register to put the data it stores on the bus, and tells the output register to read and store hwhatever value is on the bus. In this way, data can be passed around the computer. 
+The bus is like a shared group of wires that the different modules can put their value on or read whatever value is on the bus. A high E<sub>A</sub> a low L<sub>O</sub> tells the A register to put the data it stores on the bus, and tells the output register to read and store hwhatever value is on the bus. In this way, data can be passed around the computer. 
 
 ### Program Counter
 
