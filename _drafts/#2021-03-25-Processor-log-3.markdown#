@@ -31,7 +31,7 @@ Aside from generating a square wave, what other features might we want out of a 
 
 ## 555 Timer
 
-The [555 timer](https://www.ti.com/lit/ds/slfs022i/slfs022i.pdf?ts=1616675730638&ref_url=https%253A%252F%252Fwww.google.com%252F) is an extremely popular chip that can satisfy all of these requirements. 
+The [555 timer](https://www.ti.com/lit/ds/slfs022i/slfs022i.pdf?ts=1616675730638&ref_url=https%253A%252F%252Fwww.google.com%252F) is an extremely popular chip that can satisfy all of these requirements. Depending on how you wire up the 8 pins, the chip can function as an accurate timer, or a oscillator that produces a square wave. 
 
 
 
