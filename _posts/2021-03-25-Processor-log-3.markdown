@@ -33,7 +33,7 @@ Aside from generating a square wave, what other features might we want out of a 
 
 The [555 timer](https://www.ti.com/lit/ds/slfs022i/slfs022i.pdf?ts=1616675730638&ref_url=https%253A%252F%252Fwww.google.com%252F) is an extremely popular chip that can satisfy all of these requirements. There are a lot of great resources that describe the inner workings of the 555 timer, so we won't cover that here. Depending on how you wire the chip up, it can run in one of three modes: astable, monostable, and bistable. Astable is the one we want, as it produces a square wave. Below is a fairly standard setup [pulled from here](https://www.jameco.com/Jameco/workshop/TechTip/555-timer-tutorial.html). Translating that to our breadboard:
 
-![clock](/assets/log3/clock.jpg){:height="50%" width="50%"}
+![clock](/assets/log3/clock.jpg){:height="75%" width="75%"}
 
 I've added a few things from [a great video on the topic](https://www.youtube.com/watch?v=WcnHZGyzRJI&t=225s)
 
