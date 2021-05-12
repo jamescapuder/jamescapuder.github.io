@@ -9,7 +9,7 @@ date: 2021-03-18
 
 Welcome. This is going to be the transistor-transistor logic (TTL) post. We'll go over what a transistor is, why they're useful, and a couple of example circuits. Finally, we'll take a look at the 74xx series of TTL integrated circuits, the backbone of this project.
 
-*Disclaimer: not an expert. Also, the conventional flow of current (established during the early days of electricity) assumes current (electrons) flows from positive to negative. Later it was discovered that electrons are actually moving from negative to positive, the opposite of the established convention. Practically, as long as you're consistent, it doesn't make much difference. Conventional current is what stuck, but I describe an example below using the flow of electrons, because i think it makes things a bit more clear. Normally, we'll stick to conventional current.*
+*Disclaimer: not an expert.*
 
 ![NAND Gate](/assets/transistorPost/ti_sn7400n.jpg)
 

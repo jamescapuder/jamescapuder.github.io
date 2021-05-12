@@ -1,0 +1,17 @@
+---
+layout: post
+title: "Registers"
+tags: cpu devlog
+date: 2021-04-01
+---
+
+
+# Registers
+
+Welcome. In this post, we'll look at the basic building block of our registers: the D flip-flop. We'll also talk about our register design before building a few of them. 
+
+## D flip flop
+
+
+
+![](/assets/registers/circuit.png)
