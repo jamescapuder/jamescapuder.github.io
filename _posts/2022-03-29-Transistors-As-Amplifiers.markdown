@@ -5,6 +5,8 @@ tags: transistors audio
 date: 2022-03-29
 ---
 
+*work in progress* 
+
 # Transistors As Amplifiers for Audio Signals
 
 Welcome. Previously, I wrote a post about how bipolar junction transistors can be used to implement digital logic. Since writing that post, I discovered the rabbit hole of audio electronics - specifically guitar effects pedals - and along with it a broader understanding of the role of the transistor.
