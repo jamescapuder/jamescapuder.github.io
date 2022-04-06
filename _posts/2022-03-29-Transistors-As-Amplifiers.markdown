@@ -13,11 +13,9 @@ Welcome. Previously, I wrote a post about how bipolar junction transistors can b
 
 While the content in my previous post isn't necessarily wrong (provides a working understanding of an important role BJT's play in the digital world), it reflects the limited perspective I had on these devices at the time. 
 
-So today, I'll try to fill in those gaps. We'll go over some basics about amplification, different types of transistors, set up a testing rig, and look at some results on an oscilloscope.
+So today, I'll try to fill in some of those gaps. The first step in this is a primer on audio signals. We'll go over some basics about how we can represent sounds - a physical phenomena - as oscillating electrical signals or as bits. We'll touch on some motivating examples of amplification, different types of transistors, and define some test conditions.
 
 As always, I'm not an expert.
-
-
 
 
 # Primer: What does a basic audio signal look like?
@@ -100,6 +98,4 @@ Amplification is just the process of making this samll signal bigger. Why would 
 
 A guitar pickup converts the vibration of the strings into an electrical signal, which, if we want to hear, we need to plug in to an amplifier. When plugged in, the signal travels via cable to the amp. When the signal first leaves the guitar, it is very small - 1V peak to peak depending on the pickups - and the amplitude decays quickly. The amplifier increases the amplitude (voltage swing) of the signal to a level sufficient to drive a speaker, converting the electrical signal into air waves. It does this by passing the signal through a series of *gain stages* which each multiply the amplitude of the singal by some amount. The amplification in each stage is carried out by an active device like a vacuum tube, or a transistor, and the gain of each stage (amount by which the input signal is amplified) is determined by these devices and the circuits we build around them. 
 
-You might also want to increase the volume of the guitar during parts of a song for artistic effect, like during a solo, so that the guitar can be more clearly heard as a lead voice. In this case you could turn the volume up on the amplifier, but its hard to do that without taking your hands off the guitar. A more ergonomic solution can be found in *boost* pedals, which are typically one clean stage of amplification. 
-
-An example of a boost pedal is the [LPB-1](http://beavisaudio.com/schematics/Electro-Harmonix-LPB-1-Schematic.htm), which is just a [common-emitter amplifier](https://en.wikipedia.org/wiki/Common_emitter) 
+To look at a more atomic example, boost pedals are often just one clean gain stage that you can put between your guitar and amp. An example of a boost pedal is the [LPB-1](http://beavisaudio.com/schematics/Electro-Harmonix-LPB-1-Schematic.htm), which is just a [common-emitter amplifier](https://en.wikipedia.org/wiki/Common_emitter) with a couple of extra components. 
