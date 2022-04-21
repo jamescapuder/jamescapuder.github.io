@@ -16,6 +16,16 @@ I set out to write an update covering transistors as amplifiers, but found that 
 ![screenshot](/assets/wavedemo.PNG)
 
 
-The source code and precompiled binaries are available at the [Wave Playground Repository](https://github.com/jamescapuder/QtWaves) 
+The source code and precompiled binaries are available at the [Wave Playground Repository](https://github.com/jamescapuder/QtWaves). 
 
+## Features and use
 
+This program allows the user to specify waves by entering values for frequency, duration, amplitude, and shape. 
+
+The sum of all the waves the user has entered is plotted and played as audio. An additional plot displays the frequency content of the generated wave.
+
+## What was used
+
+I wrote the progenitor scripts for this program in python so I stuck with python to try and salvage some of that effort. The wave generation is done with numpy and scipy, and all the plotting with matplotlib. The GUI is built with PyQt, and the executibles are built via github action with pyinstaller. 
+
+These last two - PyQt and PyInstaller - were both new to me. Both were easy enough to get a working understanding of and fit the scope of the project pretty well. There isn't anything particularly wrong about packaging a python application as a standalone executable, but in hindsight, if an executable is the end goal there are probably better choices. 
