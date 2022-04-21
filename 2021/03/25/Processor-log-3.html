@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-XSS-Protection" content="1;mode=block" always>
+  <meta http-equiv="Referrer-Policy" content="no-referrer, strict-origin-when-cross-origin">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Timing</title>
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<meta name="generator" content="Jekyll v3.9.0">
+<meta property="og:title" content="Timing">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="The Importance of Timing">
+<meta property="og:description" content="The Importance of Timing">
+<link rel="canonical" href="https://jamescapuder.com/2021/03/25/Processor-log-3.html">
+<meta property="og:url" content="https://jamescapuder.com/2021/03/25/Processor-log-3.html">
+<meta property="og:site_name" content="James C">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2021-03-25T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Timing">
+<script type="application/ld+json">
+{"headline":"Timing","dateModified":"2021-03-25T00:00:00+00:00","datePublished":"2021-03-25T00:00:00+00:00","description":"The Importance of Timing","mainEntityOfPage":{"@type":"WebPage","@id":"https://jamescapuder.com/2021/03/25/Processor-log-3.html"},"@type":"BlogPosting","url":"https://jamescapuder.com/2021/03/25/Processor-log-3.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" type="text/css" href="/assets/main-hacker.css">
+<script async src="https://www.googletagmanager.com/gtag/js?id=%7B" id>"G-1HVVL7976G", "pv"=>{"enabled"=>false, "proxy_url"=>"", "proxy_endpoint"=>"", "cache"=>false}}"></script>
+<script>
+  window['ga-disable-{"id"=>"G-1HVVL7976G", "pv"=>{"enabled"=>false, "proxy_url"=>"", "proxy_endpoint"=>"", "cache"=>false}}'] = window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1";
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '{"id"=>"G-1HVVL7976G", "pv"=>{"enabled"=>false, "proxy_url"=>"", "proxy_endpoint"=>"", "cache"=>false}}');
+</script>
+
+</head>
+<body>
+    <div class="container">
+<header>
+  <div class="menu">
+    <ul>
+<li><a href="/">Welcome</a></li>
+<li><a href="/about/">About</a></li>
+</ul>
+  </div>
+</header>
+<main>
+	<h1 id="the-importance-of-timing">The Importance of Timing</h1>
+
+<p>Welcome. In this post, we’ll cover what a clock is in the context of a processor, why they’re important and a natural first step, and how to build one.</p>
+
+<h2 id="synchronization-and-control">Synchronization and Control</h2>
+
+<p>When we took a look at some basic logic circuits, I mentioned that the outputs of our example circuits were a direct and (almost) immediate function of the corresponding inputs. This is fine in some cases, but it means that we have no way of maintaining real state: no way of persistently storing the results of computation, and no options for sequencing actions in the processor. All the components are working asynchronously, so if we continued to build a processor like this, we’d have a hard time predicting how everything would interact and verifying that everything is working properly.</p>
+
+<p>To solve this problem, processors usually include some sort of clock module. These clock modules generate a simple square wave:</p>
+
+<p><img src="/assets/log3/SQWav.png" alt="square wave"></p>
+
+<p>This wave alternates between LOW (0v) and HIGH (5v, in our case). If we think about control signals - signals to individual modules of the processor that control things like input/output enable (whether or not we should read from/write to the bus) - we can use this square wave to determine <em>when</em> those control lines should actually be active. We can do this by AND’ing the control signals with the shared clock signal, and using that to drive the modules.</p>
+
+<p>This gives us control over how the current state of the processor progresses over time. When the clock signal is LOW, the state of the processor doesn’t change. During this time, we could set as many control signals to HIGH/LOW as we want, but until the clock signal goes HIGH, there won’t be any change in state.</p>
+
+<p>Since the main action happens when the clock signal goes high, a faster clock (more HIGH/LOW transitions per second, measured in Hertz) results in a more performant processor. Many of the 74 series chips we’ll be using have a clock input pin, so hopefully it is clear why the clock is a good place to start.</p>
+
+<h2 id="clock-requirements">Clock Requirements</h2>
+
+<p>Aside from generating a square wave, what other features might we want out of a clock module? An easy one is the ability to stop the clock. There will be situations in which being able to halt the clock and observe the state of an individual module or the processor as a whole will come in handy for troubleshooting. Another must is the ability to adjust the speed of the clock. We’ll want the freedom to watch a program execute at a human-readable speed (very slow), but retain the ability to have the processor run as fast as it can. Finally, we’ll want some form of debug mode that allows us to generate one clock pulse at a time when we press a button.</p>
+
+<h2 id="555-timer">555 Timer</h2>
+
+<p>The <a href="https://www.ti.com/lit/ds/slfs022i/slfs022i.pdf?ts=1616675730638&ref_url=https%253A%252F%252Fwww.google.com%252F">555 timer</a> is an extremely popular chip that can satisfy all of these requirements. There are a lot of great resources that describe the inner workings of the 555 timer, so we won’t cover that here. Depending on how you wire the chip up, it can run in one of three modes: astable, monostable, and bistable. Astable is the one we want, as it produces a square wave. Below is a fairly standard setup <a href="https://www.jameco.com/Jameco/workshop/TechTip/555-timer-tutorial.html">pulled from here</a>. Translating that to our breadboard:</p>
+
+<p><img src="/assets/log3/clock.jpg" alt="clock" height="75%" width="75%"></p>
+
+<p>I’ve added a few things from <a href="https://www.youtube.com/watch?v=WcnHZGyzRJI&t=225s">a great video on the topic</a></p>
+
+<p>First, the dial to the left of the chip is called a potentiometer. These function as variable resistors, meaning we can change the resistance value connected to pin 6 of the 555, which adjusts the frequency of our clock.</p>
+
+<p><iframe id="media-531263685" class="media" src="https://player.vimeo.com/video/531263685" title="" width="100%" height="350" style="max-width: 600px;outline: none" allow="encrypted-media; picture-in-picture" frameborder="0"></iframe></p>
+
+<p>To the right of the chip, there are two switches. The white and blue one stays down when you press it. Depending on whether or not the button is depressed, i’ltl either connect the middle pin (brown wire) to the left or right pins of the switch. The switch right next to it is connected to its left pin, and features both normally open and normally closed contacts.</p>
+
+<h3 id="brief-note-on-normally-opennormally-closed-contacts">Brief note on normally open/normally closed contacts</h3>
+
+<p>If a switch is normally closed, that means the circuit is normally complete, until you press the switch, at which point the flow of current is cut off. This is like an inverted version of the pushbutton switch we looked at in the transistor post. That sort of switch has normally open contacts, meaning that current can’t flow until the switch is pressed.</p>
+
+<p>The switch with that lever has three pins. Common, normally closed, and normally open. Any signal connected to the common pin will be routed through the normally closed contact until the switch is pressed, at which point the normally closed contact cuts off, and common connects through the normally open pin.</p>
+
+<p>So, when the first switch is depressed, it connects the capacitor on pin 2 of the 555 timer (critical to the chip’s astable mode) to the common pin of the second switch. The normally closed pin of the switch is tied to ground, which essentially shorts the whole charge/discharge method that the 555 timer uses. This stops the clock from running. Pressing the switch connects common (which connects to pin 2 of the 555) to 5v, and brings the output high. Here it is in action:</p>
+
+<p><iframe id="media-531265129" class="media" src="https://player.vimeo.com/video/531265129" title="" width="100%" height="350" style="max-width: 600px;outline: none" allow="encrypted-media; picture-in-picture" frameborder="0"></iframe></p>
+
+<p>So now, we’ve satisfied all of our immediate requirements. We have a circuit that produces a square wave, features adjustable speed, and can be stopped and single-stepped to produce individual clock pulses. This wraps up the clock module for now. Later on, we’ll likely revisit this board to add things like an actual halt signal that can be controlled without a button, as well as an inverted clock output.</p>
+
+<p>Thanks for reading this far. This post had a lot of hand waving, but hopefully the main ideas behind our clock are still clear. In the next post, I’ll talk about registers and the program counter.</p>
+
+<p>jc</p>
+
+
+
+      </main><footer>
+  
+</footer>
+</div>
+  </body>
+  </html>

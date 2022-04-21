@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://jamescapuder.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://jamescapuder.com/" rel="alternate" type="text/html" /><updated>2022-04-21T15:22:55+00:00</updated><id>https://jamescapuder.com/feed.xml</id><title type="html">James C</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Wave Playground</title><link href="https://jamescapuder.com/2022/04/21/Waves.html" rel="alternate" type="text/html" title="Wave Playground" /><published>2022-04-21T00:00:00+00:00</published><updated>2022-04-21T00:00:00+00:00</updated><id>https://jamescapuder.com/2022/04/21/Waves</id><content type="html" xml:base="https://jamescapuder.com/2022/04/21/Waves.html">&lt;h1 id=&quot;waves&quot;&gt;Waves&lt;/h1&gt;
+
+&lt;p&gt;Welcome. Previously, I wrote a post about how bipolar junction transistors can be used to implement digital logic. Since writing that post, I discovered the rabbit hole of audio electronics - specifically guitar effects pedals - and along with it a broader understanding of the role of the transistor.&lt;/p&gt;
+
+&lt;p&gt;While the content in my previous post isn’t necessarily wrong (provides a working understanding of an important role BJT’s play in the digital world), it reflects the limited perspective I had on these devices at the time.&lt;/p&gt;
+
+&lt;p&gt;I set out to write an update covering transistors as amplifiers, but found that I wanted to include a brief primer on sound and audio signals. I put together some python scripts to generate some .wav files and plots, and ultimately that evolved into this program:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/wavedemo.PNG&quot; alt=&quot;screenshot&quot; height=&quot;50%&quot; width=&quot;50%&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The source code and precompiled binaries are available at the &lt;a href=&quot;https://github.com/jamescapuder/QtWaves&quot;&gt;Wave Playground Repository&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;features-and-use&quot;&gt;Features and use&lt;/h2&gt;
+
+&lt;p&gt;This program allows the user to specify waves by entering values for frequency, duration, amplitude, and shape.&lt;/p&gt;
+
+&lt;p&gt;The sum of all the waves the user has entered is plotted and played as audio. An additional plot displays the frequency content of the generated wave.&lt;/p&gt;
+
+&lt;h2 id=&quot;what-was-used&quot;&gt;What was used&lt;/h2&gt;
+
+&lt;p&gt;I wrote the progenitor scripts for this program in python so I stuck with python to try and salvage some of that effort. The wave generation is done with numpy and scipy, and all the plotting with matplotlib. The GUI is built with PyQt, and the executibles are built via github action with pyinstaller.&lt;/p&gt;
+
+&lt;p&gt;These last two - PyQt and PyInstaller - were both new to me. Both were easy enough to get a working understanding of and fit the scope of the project pretty well. There isn’t anything particularly wrong about packaging a python application as a standalone executable, but in hindsight, if an executable is the end goal there are probably better choices.&lt;/p&gt;</content><author><name></name></author><category term="software" /><category term="audio" /><summary type="html">Waves</summary></entry><entry><title type="html">Timing</title><link href="https://jamescapuder.com/2021/03/25/Processor-log-3.html" rel="alternate" type="text/html" title="Timing" /><published>2021-03-25T00:00:00+00:00</published><updated>2021-03-25T00:00:00+00:00</updated><id>https://jamescapuder.com/2021/03/25/Processor-log-3</id><content type="html" xml:base="https://jamescapuder.com/2021/03/25/Processor-log-3.html">&lt;h1 id=&quot;the-importance-of-timing&quot;&gt;The Importance of Timing&lt;/h1&gt;
+
+&lt;p&gt;Welcome. In this post, we’ll cover what a clock is in the context of a processor, why they’re important and a natural first step, and how to build one.&lt;/p&gt;
+
+&lt;h2 id=&quot;synchronization-and-control&quot;&gt;Synchronization and Control&lt;/h2&gt;
+
+&lt;p&gt;When we took a look at some basic logic circuits, I mentioned that the outputs of our example circuits were a direct and (almost) immediate function of the corresponding inputs. This is fine in some cases, but it means that we have no way of maintaining real state: no way of persistently storing the results of computation, and no options for sequencing actions in the processor. All the components are working asynchronously, so if we continued to build a processor like this, we’d have a hard time predicting how everything would interact and verifying that everything is working properly.&lt;/p&gt;
+
+&lt;p&gt;To solve this problem, processors usually include some sort of clock module. These clock modules generate a simple square wave:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/log3/SQWav.png&quot; alt=&quot;square wave&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This wave alternates between LOW (0v) and HIGH (5v, in our case). If we think about control signals - signals to individual modules of the processor that control things like input/output enable (whether or not we should read from/write to the bus) - we can use this square wave to determine &lt;em&gt;when&lt;/em&gt; those control lines should actually be active. We can do this by AND’ing the control signals with the shared clock signal, and using that to drive the modules.&lt;/p&gt;
+
+&lt;p&gt;This gives us control over how the current state of the processor progresses over time. When the clock signal is LOW, the state of the processor doesn’t change. During this time, we could set as many control signals to HIGH/LOW as we want, but until the clock signal goes HIGH, there won’t be any change in state.&lt;/p&gt;
+
+&lt;p&gt;Since the main action happens when the clock signal goes high, a faster clock (more HIGH/LOW transitions per second, measured in Hertz) results in a more performant processor. Many of the 74 series chips we’ll be using have a clock input pin, so hopefully it is clear why the clock is a good place to start.&lt;/p&gt;
+
+&lt;h2 id=&quot;clock-requirements&quot;&gt;Clock Requirements&lt;/h2&gt;
+
+&lt;p&gt;Aside from generating a square wave, what other features might we want out of a clock module? An easy one is the ability to stop the clock. There will be situations in which being able to halt the clock and observe the state of an individual module or the processor as a whole will come in handy for troubleshooting. Another must is the ability to adjust the speed of the clock. We’ll want the freedom to watch a program execute at a human-readable speed (very slow), but retain the ability to have the processor run as fast as it can. Finally, we’ll want some form of debug mode that allows us to generate one clock pulse at a time when we press a button.&lt;/p&gt;
+
+&lt;h2 id=&quot;555-timer&quot;&gt;555 Timer&lt;/h2&gt;
+
+&lt;p&gt;The &lt;a href=&quot;https://www.ti.com/lit/ds/slfs022i/slfs022i.pdf?ts=1616675730638&amp;amp;ref_url=https%253A%252F%252Fwww.google.com%252F&quot;&gt;555 timer&lt;/a&gt; is an extremely popular chip that can satisfy all of these requirements. There are a lot of great resources that describe the inner workings of the 555 timer, so we won’t cover that here. Depending on how you wire the chip up, it can run in one of three modes: astable, monostable, and bistable. Astable is the one we want, as it produces a square wave. Below is a fairly standard setup &lt;a href=&quot;https://www.jameco.com/Jameco/workshop/TechTip/555-timer-tutorial.html&quot;&gt;pulled from here&lt;/a&gt;. Translating that to our breadboard:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/log3/clock.jpg&quot; alt=&quot;clock&quot; height=&quot;75%&quot; width=&quot;75%&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I’ve added a few things from &lt;a href=&quot;https://www.youtube.com/watch?v=WcnHZGyzRJI&amp;amp;t=225s&quot;&gt;a great video on the topic&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;First, the dial to the left of the chip is called a potentiometer. These function as variable resistors, meaning we can change the resistance value connected to pin 6 of the 555, which adjusts the frequency of our clock.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://vimeo.com/531263685&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;To the right of the chip, there are two switches. The white and blue one stays down when you press it. Depending on whether or not the button is depressed, i’ltl either connect the middle pin (brown wire) to the left or right pins of the switch. The switch right next to it is connected to its left pin, and features both normally open and normally closed contacts.&lt;/p&gt;
+
+&lt;h3 id=&quot;brief-note-on-normally-opennormally-closed-contacts&quot;&gt;Brief note on normally open/normally closed contacts&lt;/h3&gt;
+
+&lt;p&gt;If a switch is normally closed, that means the circuit is normally complete, until you press the switch, at which point the flow of current is cut off. This is like an inverted version of the pushbutton switch we looked at in the transistor post. That sort of switch has normally open contacts, meaning that current can’t flow until the switch is pressed.&lt;/p&gt;
+
+&lt;p&gt;The switch with that lever has three pins. Common, normally closed, and normally open. Any signal connected to the common pin will be routed through the normally closed contact until the switch is pressed, at which point the normally closed contact cuts off, and common connects through the normally open pin.&lt;/p&gt;
+
+&lt;p&gt;So, when the first switch is depressed, it connects the capacitor on pin 2 of the 555 timer (critical to the chip’s astable mode) to the common pin of the second switch. The normally closed pin of the switch is tied to ground, which essentially shorts the whole charge/discharge method that the 555 timer uses. This stops the clock from running. Pressing the switch connects common (which connects to pin 2 of the 555) to 5v, and brings the output high. Here it is in action:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://vimeo.com/531265129&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So now, we’ve satisfied all of our immediate requirements. We have a circuit that produces a square wave, features adjustable speed, and can be stopped and single-stepped to produce individual clock pulses. This wraps up the clock module for now. Later on, we’ll likely revisit this board to add things like an actual halt signal that can be controlled without a button, as well as an inverted clock output.&lt;/p&gt;
+
+&lt;p&gt;Thanks for reading this far. This post had a lot of hand waving, but hopefully the main ideas behind our clock are still clear. In the next post, I’ll talk about registers and the program counter.&lt;/p&gt;
+
+&lt;p&gt;jc&lt;/p&gt;</content><author><name></name></author><category term="cpu" /><category term="devlog" /><summary type="html">The Importance of Timing</summary></entry><entry><title type="html">Transistors and TTL IC’s</title><link href="https://jamescapuder.com/2021/03/18/Transistors-and-TTL.html" rel="alternate" type="text/html" title="Transistors and TTL IC’s" /><published>2021-03-18T00:00:00+00:00</published><updated>2021-03-18T00:00:00+00:00</updated><id>https://jamescapuder.com/2021/03/18/Transistors-and-TTL</id><content type="html" xml:base="https://jamescapuder.com/2021/03/18/Transistors-and-TTL.html">&lt;h1 id=&quot;transistors-and-ttl-ics&quot;&gt;Transistors and TTL IC’s&lt;/h1&gt;
+
+&lt;p&gt;Welcome. This is going to be the transistor-transistor logic (TTL) post. We’ll go over what a transistor is, why they’re useful, and a couple of example circuits. Finally, we’ll take a look at the 74xx series of TTL integrated circuits, the backbone of this project.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Disclaimer: not an expert.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/transistorPost/ti_sn7400n.jpg&quot; alt=&quot;NAND Gate&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;transistors&quot;&gt;Transistors&lt;/h2&gt;
+
+&lt;p&gt;Transistors can come in many forms and have a wide variety of use cases, but we’re only interested in one of those forms (NPN Bipolar Junction Transistors) and primarily in one of their uses - an electrically controlled switch. Consider the following circuit with a pushbutton switch:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/transistorPost/switch_open.jpg&quot; alt=&quot;Switch&quot; height=&quot;50%&quot; width=&quot;50%&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Without the button depressed, there is no connection between the positive and negative power rails. Current can’t flow from the positive power rail, through the switch, through the LED, and to ground. But while the button is pressed, the circuit completes, and current flows from positive to negative, through the LED.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/transistorPost/switch_closed.jpg&quot; alt=&quot;SwitchPressed&quot; height=&quot;50%&quot; width=&quot;50%&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This effectively gives us some rudimentary conditional logic. If the button is pressed, the output value (connected to the LED) is on, otherwise, its off.&lt;/p&gt;
+
+&lt;p&gt;Transistors give us something similar, except instead of pressing a button, we make use of a digital signal. Let’s look at the schematic symbol for a transistor.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/transistorPost/NPN-bipolar-junction-transistor-symbol.png&quot; alt=&quot;Transistor&quot; height=&quot;50%&quot; width=&quot;50%&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;It has 3 terminals: Collector (C), Base (B), and Emitter (E). The base is our input, when we apply a small current between this terminal and the emitter, a larger current begins to flow between the collector and the emitter. In this case, applying a current to the base is like pressing down on the switch: it completes the circuit between the other terminals.&lt;/p&gt;
+
+&lt;p&gt;Transistors can be linked together in different ways to make logic gates, which is what we care about for building this processor.&lt;/p&gt;
+
+&lt;h2 id=&quot;nand-gates&quot;&gt;NAND Gates&lt;/h2&gt;
+
+&lt;p&gt;A NAND gate is an inverted AND gate. The output of an AND gate is only 1 (also called true or HIGH) when all of its inputs are true. If you invert the output (every 0 becomes a 1, every 1 becomes a 0), you get a NAND gate, the output of which is 1 in every case except when both inputs are 1. Truth table below:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;A&lt;/th&gt;
+      &lt;th&gt;B&lt;/th&gt;
+      &lt;th&gt;Out&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;NAND gates are pretty important because they’re what is sometimes called a Universal Gate. This means that any boolean expression (sequence of logic gates) can be expressed using exclusively NAND gates. I won’t cover a proof here, but check out the &lt;a href=&quot;https://en.wikipedia.org/wiki/NAND_logic&quot;&gt;wikipedia page on NAND logic&lt;/a&gt; if you want to see some examples.&lt;/p&gt;
+
+&lt;p&gt;Let’s make one out of transistors. We need two things: an inverter, and an AND gate. Lets start out with the inverter. The leftmost pin is the collector, the middle pin is the base, and the rightmost pin is the emitter. In the top picture, the input to the base is a 0, so the only complete circuit between 5V (positive) and ground (negative) is through the resistor and LED (second picture). When the input to the base is on, then current can flow between the collector and the emitter. Since the collector and the LED are tied to ground, the voltage differential between the LED and the resistor becomes 0. When this happens, current wont flow through the LED, and instead will pass through the resistor to 5V, thus turning the output off.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/transistorPost/inverter.jpg&quot; alt=&quot;inverter1&quot; height=&quot;75%&quot; width=&quot;75%&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/transistorPost/inverter_LI.jpg&quot; alt=&quot;invertercurrent&quot; height=&quot;75%&quot; width=&quot;75%&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/transistorPost/inverter2.jpg&quot; alt=&quot;inverter2&quot; height=&quot;75%&quot; width=&quot;75%&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/transistorPost/inverter2_LI.jpg&quot; alt=&quot;inverter2current&quot; height=&quot;75%&quot; width=&quot;75%&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;An AND gate is even more simple to construct. The emitter of the A input transistor is tied to the collector of the B input transistor, the emitter of which is our final output. In order for current to flow between the collector of A and the emitter of B, a current needs to be applied to the base of each. If just the A input is on and B is off, then the circuit remains incomplete as current can’t flow from the collector to the emitter of B. Likewise, if only B is on, then current can flow from it’s base to emitter, but no current is reaching the collector, as this requires A to be on.&lt;/p&gt;
+
+&lt;p&gt;If we connect the emitter of B to the base of the inverter circuit above, then we have a NAND gate, and could theoretically build any logic we want. If we wanted to build this processor entirely out of discrete transistors like this, we certainly could, but I’m more interested in the computer architecture aspect, so instead we’ll make use of integrated circuits that give us these gates.&lt;/p&gt;
+
+&lt;h1 id=&quot;74xx-series-ics&quot;&gt;74xx Series IC’s&lt;/h1&gt;
+
+&lt;p&gt;The 74xx series features &lt;a href=&quot;https://en.wikipedia.org/wiki/List_of_7400-series_integrated_circuits#74x00_%E2%80%93_74x99&quot;&gt;a really broad range of gates&lt;/a&gt; and other things you can build with them. The 7400, for example, features four 2 input NAND gates on a single chip. This is the chip shown at the top of this post. Let’s look at the datasheet to figure out what those different pins do:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/transistorPost/7400Datasheet.png.PNG&quot; alt=&quot;74LS00&quot; height=&quot;75%&quot; width=&quot;75%&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;On the left, we see the connection diagram. Pin 14 (top left) and pin 7 (bottom right) supply power to the chip and are tied to 5V and ground, respectively. The other pins serve as inputs and output for the 4 gates, 12 in total. On the right, we can see the truth table. For any of the 4 gates, the output will be low (0V) when the inputs are both high (5V), and high otherwise.&lt;/p&gt;
+
+&lt;p&gt;This is convenient for us, as it means we won’t need to build anything out of discrete transistors. The series includes a lot of handy chips that we can make use of. You might notice in the examples featured above that we haven’t talked about how to actually store data, or latch a particular value for later use. All of our examples so far have outputs that are directly tied to whatever states the inputs are in. To store data, we can make constructs out of NAND gates called &lt;em&gt;latches&lt;/em&gt; and &lt;em&gt;flip-flops&lt;/em&gt;. We’ll discuss these in another post, but rather than constructing them with NAND gates, we’ll just use the 74xx series chips that already implement these constructs.&lt;/p&gt;
+
+&lt;p&gt;For the first cut of this project, however, I’m going to avoid chips like the &lt;a href=&quot;http://susta.cz/fel/74/pdf/sn_74181.pdf&quot;&gt;74ls181&lt;/a&gt;, which is a feature rich 4 bit ALU. If we wired two of these together, then we could have a complete 8 bit ALU with 32 total logic and arithmetic operations. This feels a little black-boxy, and considering that the ALU is an interesting component, I’d rather build something out of more easily understandable components, at least for the first implementation.&lt;/p&gt;
+
+&lt;p&gt;A great aspect of a project like this is how modular it is. As long as the individual components (ALU, registers, clock, control logic, etc) interface with the rest of the system in a (roughly) similar way, we can redesign each with minimal overall modification. This takes some pressure off of the first implementation, as we can always revisit modules as our goals and needs evolve.&lt;/p&gt;
+
+&lt;p&gt;Thanks for reading this far. In the next post I’ll talk about what the first implementation of the system might actually look like from an architecture perspective, and the modules that I’m planning on improving for subsequent iterations.&lt;/p&gt;
+
+&lt;p&gt;jc&lt;/p&gt;</content><author><name></name></author><category term="cpu" /><category term="devlog" /><summary type="html">Transistors and TTL IC’s</summary></entry><entry><title type="html">Processor Project Log 1: Background</title><link href="https://jamescapuder.com/2021/03/17/Processor-log-1.html" rel="alternate" type="text/html" title="Processor Project Log 1: Background" /><published>2021-03-17T19:19:19+00:00</published><updated>2021-03-17T19:19:19+00:00</updated><id>https://jamescapuder.com/2021/03/17/Processor-log-1</id><content type="html" xml:base="https://jamescapuder.com/2021/03/17/Processor-log-1.html">&lt;h1 id=&quot;processor-project-log-1-background&quot;&gt;Processor Project Log 1: Background&lt;/h1&gt;
+
+&lt;p&gt;Welcome, this is the first post discussing my current project: building a processor out of TTL integrated circuits. I’ll cover a bit of background on the subject matter, and what is involved in a project like this.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;disclaimer: I’m not - by any means - an expert on this stuff. I’m exploring these topics as a learning experience, and any explanations I present are as I understand them, which could be totally wrong/misguided&lt;/em&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;some-project-background&quot;&gt;Some Project Background&lt;/h1&gt;
+
+&lt;h2 id=&quot;what-even-is-a-central-processing-unit-cpu&quot;&gt;What even is a central processing unit (CPU)?&lt;/h2&gt;
+
+&lt;p&gt;A CPU is to a computer as a brain is to any animal. The brain is the center of control: it is responsible for decision making, receiving sensory input (sight, touch, taste, etc.), and sending signals to the rest of the body.&lt;/p&gt;
+
+&lt;p&gt;Similarly, a CPU is responsible for decoding and executing instructions, as well as sending/receiving data and control signals to external devices, like peripherals (keyboards, mice, devices you plug in), memory, the GPU, etc.&lt;/p&gt;
+
+&lt;p&gt;Hopefully this analogy is pretty clear - both are the primary workhorses of their respective systems.&lt;/p&gt;
+
+&lt;h2 id=&quot;how-could-you-make-one&quot;&gt;How Could You Make One?&lt;/h2&gt;
+
+&lt;p&gt;Generally, there are a few components that make a processor tick. Let’s say we want to tell a processor to add two numbers, &lt;strong&gt;A&lt;/strong&gt; and &lt;strong&gt;B&lt;/strong&gt;. Without getting bogged down with too much detail (&lt;em&gt;yet&lt;/em&gt;), what circuits do we need to make that happen?&lt;/p&gt;
+
+&lt;h3 id=&quot;a-way-to-make-it-do-anything&quot;&gt;A way to make it do &lt;em&gt;anything&lt;/em&gt;&lt;/h3&gt;
+
+&lt;p&gt;First, we need a way to actually direct the processor to do something, which in our case is “add these two numbers.” The first step is to translate this operation into a format the computer can understand - an operation in such a format is called an &lt;em&gt;instruction&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Instructions are a binary representation of the basic operations a processor can perform. Operations like moving/copying data, arithmetic, and control flow can all fall under this category. They tend to be encoded in the CPU itself, and together are called an &lt;em&gt;instruction set&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Instructions are generally made up of an opcode, which (arbitrarily) designates the operation we want to perform, followed by the operands needed for the operation. For example, if we pick &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0100&lt;/code&gt; as the opcode for “add,” and let &lt;strong&gt;A&lt;/strong&gt;=8 and &lt;strong&gt;B&lt;/strong&gt;=5, the instruction could look something like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;0100 1000 0101
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In reality, the operands are often memory addresses, which amounts to asking the processor to “add the value at memory location &lt;strong&gt;A&lt;/strong&gt; to the value at memory location &lt;strong&gt;B&lt;/strong&gt;.” For this example, it makes little difference.&lt;/p&gt;
+
+&lt;p&gt;Now we have what we need to tell the CPU what work we want it to do, but there’s another step required before it can actually &lt;em&gt;do&lt;/em&gt; the work. The instruction needs to be decoded into control signals that tell the other components what they should be doing. More on these later.&lt;/p&gt;
+
+&lt;h3 id=&quot;somewhere-to-put-a-and-b&quot;&gt;Somewhere to put &lt;strong&gt;A&lt;/strong&gt; and &lt;strong&gt;B&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;We need somewhere to hold data that we plan to use again in the near future. We’re passing the processor some operands, and it needs to store those operands somewhere useful. These are called &lt;em&gt;Registers&lt;/em&gt;, and they’re where you put data used for calculations or that you might otherwise need to manipulate. Registers generally don’t hold &lt;em&gt;much&lt;/em&gt; data, but can be read from/written to much faster than memory that’s external to the processor’s design.&lt;/p&gt;
+
+&lt;h3 id=&quot;something-that-knows-math&quot;&gt;Something that knows math&lt;/h3&gt;
+
+&lt;p&gt;Now that we have the data stored somewhere useful, and the processor knows what needs to be done, we need something that can do basic arithmetic. This is called the &lt;em&gt;Arithmetic Logic Unit&lt;/em&gt; or &lt;em&gt;ALU&lt;/em&gt;. The ALU can perform mathematical and logical operations on (binary) integers, so we’ll need one of those if the processor is to do anything useful.&lt;/p&gt;
+
+&lt;h3 id=&quot;getting-programs-and-displaying-results&quot;&gt;Getting programs and displaying results&lt;/h3&gt;
+
+&lt;p&gt;We need some sort of I/O, input for feeding the CPU instructions, and output for presenting the results of a program (or intermediate results during execution). Ideally the output would be in a format easier for us to read than binary, but we can put that off until the end, since it just amounts to a mild inconvenience and doesn’t need to be factored in to the overall design.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-plan&quot;&gt;The plan?&lt;/h2&gt;
+
+&lt;p&gt;The plan is to implement the various necessary components of the processor out of logic gates using various &lt;a href=&quot;https://en.wikipedia.org/wiki/List_of_7400-series_integrated_circuits#74x00_%E2%80%93_74x99&quot;&gt;74xx series&lt;/a&gt; chips.&lt;/p&gt;
+
+&lt;p&gt;To prototype these circuits, I’ll be using solderless breadboards like these (&lt;a href=&quot;https://protosupplies.com/wp-content/uploads/2018/12/Breadboard-Details.jpg&quot;&gt;image source&lt;/a&gt;):&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/Breadboard-Details.jpg&quot; alt=&quot;Breadboard&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I still have most of the design decisions ahead of me, so my progress thus far amounts to experimentation and discovery. I’ll talk about 74xx series IC’s and the decisions that need to be made in a following post - thanks for reading B-)&lt;/p&gt;</content><author><name></name></author><category term="cpu" /><category term="devlog" /><summary type="html">Processor Project Log 1: Background</summary></entry></feed>
