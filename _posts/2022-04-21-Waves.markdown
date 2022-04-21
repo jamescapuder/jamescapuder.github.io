@@ -13,7 +13,8 @@ While the content in my previous post isn't necessarily wrong (provides a workin
 
 I set out to write an update covering transistors as amplifiers, but found that I wanted to include a brief primer on sound and audio signals. I put together some python scripts to generate some .wav files and plots, and ultimately that evolved into this program: 
 
-![screenshot](https://github.com/jamescapuder/QtWaves/blob/master/assets/wavedemo.PNG)
+![screenshot](/assets/wavedemo.PNG)
+
 
 The source code and precompiled binaries are available at the [Wave Playground Repository](https://github.com/jamescapuder/QtWaves) 
 
